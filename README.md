@@ -16,12 +16,12 @@
 - Create another project to manage eks addons
 - Setup the gitops process with argocd
 
-Could be an interesting thing to manage addons and argocd with using the following module: https://github.com/aws-ia/terraform-aws-eks-blueprints-addons
+Could be an interesting thing to manage addons and argocd with the following module: https://github.com/aws-ia/terraform-aws-eks-blueprints-addons
 
 ### How to execute
 
 Beware! Before run there are some placeholder here and there...
-In each folder of under the terraform one you can just run:
+In each folder under the terraform one you can just run:
 
 ```
 terraform init
