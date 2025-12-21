@@ -12,7 +12,7 @@
 
 ## To do:
 
-- Run the eks project with success (first run was failed for a silly mistake...)
+- Run the eks project with success (first run has failed for a silly mistake...)
 - Create another project to manage eks addons
 - Setup the gitops process with argocd
 
