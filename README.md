@@ -14,6 +14,7 @@
 
 - Run the eks project with success (first run has failed for a silly mistake...)
 - Implement upgrade strategy for eks node group (max_unavailable 1)
+- disable compute_config in eks project
 - Create another project to manage eks addons
 - Setup the gitops process with argocd
 
