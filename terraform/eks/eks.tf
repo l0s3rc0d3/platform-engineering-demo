@@ -6,12 +6,16 @@ module "eks" {
   kubernetes_version = var.eks_version
 
   vpc_id                   = data.aws_vpc.this.id
-  subnet_ids               = data.aws_subnets.eks_node_subnets.ids
-  control_plane_subnet_ids = data.aws_subnets.eks_node_subnets.ids
+  subnet_ids               = data.aws_subnets.eks_subnets.ids
+  control_plane_subnet_ids = data.aws_subnets.eks_subnets.ids
 
   endpoint_public_access       = true
   endpoint_private_access      = true
   endpoint_public_access_cidrs = var.eks_controlplane_whitelist
+
+  compute_config = {
+    enabled = false
+  }
 
   enable_irsa = true
 
@@ -31,7 +35,20 @@ module "eks" {
 
   eks_managed_node_groups = { for name, config in var.eks_managed_node_groups :
     name => merge(config, {
-      subnet_ids = data.aws_subnets.eks_node_subnets.ids
+      subnet_ids = data.aws_subnets.eks_subnets.ids
     })
+  }
+
+  addons = {
+    coredns = {
+      most_recent = true
+    }
+    kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni = {
+      most_recent    = true
+      before_compute = true
+    }
   }
 }

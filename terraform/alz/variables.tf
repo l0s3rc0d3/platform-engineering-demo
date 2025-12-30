@@ -24,11 +24,6 @@ variable "vpc_primary_cidr" {
   description = "Aws primary vpc cidr"
 }
 
-variable "vpc_secondary_cidr" {
-  type        = list(string)
-  description = "Aws secondary vpc cidr (used for eks cluster)"
-}
-
 variable "vpc_availability_zones" {
   type        = list(string)
   description = "Aws availability zones"
@@ -44,7 +39,7 @@ variable "vpc_private_subnets" {
   description = "Aws vpc private subnets"
 }
 
-variable "vpc_eks_pods_subnets" {
+variable "vpc_eks_subnets" {
   type        = list(string)
   description = "Aws vpc eks subnets"
 }

@@ -5,7 +5,7 @@ data "aws_vpc" "this" {
   }
 }
 
-data "aws_subnets" "eks_node_subnets" {
+data "aws_subnets" "eks_subnets" {
   filter {
     name   = "vpc-id"
     values = [data.aws_vpc.this.id]
@@ -13,6 +13,6 @@ data "aws_subnets" "eks_node_subnets" {
 
   filter {
     name   = "cidr-block"
-    values = var.vpc_eks_nodes_subnets
+    values = var.vpc_eks_subnets
   }
 }

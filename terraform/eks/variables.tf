@@ -33,7 +33,7 @@ variable "eks_controlplane_whitelist" {
   description = "Eks subnet whitelist to enable reachability"
 }
 
-variable "vpc_eks_nodes_subnets" {
+variable "vpc_eks_subnets" {
   type        = list(string)
   description = "Aws vpc eks subnets"
 }
