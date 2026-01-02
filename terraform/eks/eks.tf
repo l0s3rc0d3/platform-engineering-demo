@@ -13,6 +13,12 @@ module "eks" {
   endpoint_private_access      = true
   endpoint_public_access_cidrs = var.eks_controlplane_whitelist
 
+  timeouts = {
+    create = "20m"
+    update = "20m"
+    delete = "20m"
+  }
+
   compute_config = {
     enabled = false
   }
@@ -42,13 +48,53 @@ module "eks" {
   addons = {
     coredns = {
       most_recent = true
+      resolve_conflicts_on_create = "OVERWRITE" # this could be useful to overcome order of apply of resources
+      resolve_conflicts_on_update = "OVERWRITE" # this could be useful to overcome issues during the updates 
+      # union of tolerations default one with custom one
+      configuration_values = jsonencode({
+        tolerations = concat(local.addon_tolerations, [
+          {
+            key      = "node.kubernetes.io/not-ready"
+            operator = "Exists"
+            effect   = "NoSchedule"
+          }
+        ])
+      })
     }
     kube-proxy = {
       most_recent = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "OVERWRITE"
+      # we dont need to pass toleration here cause kube-proxy by default has: 
+      # tolerations: 
+      #   - operator: Exists 
+      # that works like a wildcard
     }
     vpc-cni = {
       most_recent    = true
       before_compute = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "OVERWRITE"
+      # union of tolerations default one with custom one
+      configuration_values = jsonencode({
+        # This could be useful to enhance the number of pods schedulable on a single node cause max pods are 18
+        # for the purpose of this demo i leave this commented out
+        # env = {
+        #   ENABLE_PREFIX_DELEGATION = "true"
+        # }
+        tolerations = concat(local.addon_tolerations, [
+          {
+            key      = "node.kubernetes.io/not-ready"
+            operator = "Exists"
+            effect   = "NoSchedule"
+          },
+          {
+            key      = "node.kubernetes.io/unreachable"
+            operator = "Exists"
+            effect   = "NoSchedule"
+          }
+        ])
+      })
     }
   }
 }

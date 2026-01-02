@@ -49,6 +49,12 @@ variable "eks_managed_node_groups" {
     min_size       = number
     max_size       = number
     desired_size   = number
+    labels         = map(string)
+    taints         = map(object({
+      key    = string
+      value  = string
+      effect = string
+    }))
   }))
   description = "Aws eks managed node groups for platform engineering team"
 }
