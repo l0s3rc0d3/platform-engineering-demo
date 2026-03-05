@@ -12,7 +12,6 @@
 
 ## To do:
 
-- fix data source for eks subnets, better using tags
 - Implement upgrade strategy for eks node group (max_unavailable 1)
 - Expands access entries to include eks AmazonEKSViewPolicy for devs
 - Create another project to manage eks addons

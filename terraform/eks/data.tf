@@ -12,7 +12,7 @@ data "aws_subnets" "eks_subnets" {
   }
 
   filter {
-    name   = "cidr-block"
-    values = var.vpc_eks_subnets
+    name   = "tag:SubnetTier"
+    values = ["EKS"]
   }
 }

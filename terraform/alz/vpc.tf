@@ -35,3 +35,11 @@ module "vpc" {
     "karpenter.sh/discovery"          = var.vpc_karpenter_tag
   }
 }
+
+# Tag to eks subnets to automatic retrieve them in eks project with tags to harden the project
+resource "aws_ec2_tag" "eks_subnets_tier" {
+  count       = length(local.eks_subnet_ids)
+  resource_id = local.eks_subnet_ids[count.index]
+  key         = "SubnetTier"
+  value       = "EKS"
+}

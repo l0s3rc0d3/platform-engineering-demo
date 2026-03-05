@@ -33,11 +33,6 @@ variable "eks_controlplane_whitelist" {
   description = "Eks subnet whitelist to enable reachability"
 }
 
-variable "vpc_eks_subnets" {
-  type        = list(string)
-  description = "Aws vpc eks subnets"
-}
-
 variable "eks_cluster_admins" {
   type        = list(string)
   description = "Aws eks cluster admins iam role/users arn to populate access_entries"
