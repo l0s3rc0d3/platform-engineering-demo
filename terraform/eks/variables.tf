@@ -50,7 +50,7 @@ variable "eks_managed_node_groups" {
     max_size       = number
     desired_size   = number
     labels         = map(string)
-    taints         = map(object({
+    taints = map(object({
       key    = string
       value  = string
       effect = string

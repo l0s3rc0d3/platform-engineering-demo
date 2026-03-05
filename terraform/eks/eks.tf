@@ -47,7 +47,7 @@ module "eks" {
 
   addons = {
     coredns = {
-      most_recent = true
+      most_recent                 = true
       resolve_conflicts_on_create = "OVERWRITE" # this could be useful to overcome order of apply of resources
       resolve_conflicts_on_update = "OVERWRITE" # this could be useful to overcome issues during the updates 
       # union of tolerations default one with custom one
@@ -62,7 +62,7 @@ module "eks" {
       })
     }
     kube-proxy = {
-      most_recent = true
+      most_recent                 = true
       resolve_conflicts_on_create = "OVERWRITE"
       resolve_conflicts_on_update = "OVERWRITE"
       # we dont need to pass toleration here cause kube-proxy by default has: 
@@ -71,8 +71,8 @@ module "eks" {
       # that works like a wildcard
     }
     vpc-cni = {
-      most_recent    = true
-      before_compute = true
+      most_recent                 = true
+      before_compute              = true
       resolve_conflicts_on_create = "OVERWRITE"
       resolve_conflicts_on_update = "OVERWRITE"
       # union of tolerations default one with custom one

@@ -2,7 +2,7 @@
 
 ## Key Features:
 
-- Terraform projects are little on purpose i want to avoid to have a big cauldron, it's better to divide in multiple project to enhance the maintainability of the iac
+- Terraform projects are small on purpose i want to avoid to have a big cauldron, it's better to divide in multiple projects to enhance the maintainability of the iac
 - Terraform projects are shaped so a dr solution would be easy
 - Terraform project are shaped in a way that you have to just fill in the var file to reduce the complexity
 - Vpc multi-az with non routable ip ranges for eks pods
@@ -12,6 +12,7 @@
 
 ## To do:
 
+- fix data source for eks subnets, better using tags
 - Implement upgrade strategy for eks node group (max_unavailable 1)
 - Expands access entries to include eks AmazonEKSViewPolicy for devs
 - Create another project to manage eks addons

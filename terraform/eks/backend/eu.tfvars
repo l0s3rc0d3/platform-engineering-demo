@@ -15,7 +15,7 @@ eks_managed_node_groups = {
     min_size       = 2
     max_size       = 2
     desired_size   = 2
-    
+
     labels = {
       "team"      = "platform-engineering"
       "node-type" = "reserved"

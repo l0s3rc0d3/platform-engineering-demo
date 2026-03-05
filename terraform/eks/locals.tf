@@ -9,7 +9,7 @@ locals {
   }
 
   all_taints = flatten([
-    for group_name, group_config in var.eks_managed_node_groups : 
+    for group_name, group_config in var.eks_managed_node_groups :
     values(group_config.taints)
   ])
 
