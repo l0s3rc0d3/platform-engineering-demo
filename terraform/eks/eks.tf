@@ -42,6 +42,9 @@ module "eks" {
   eks_managed_node_groups = { for name, config in var.eks_managed_node_groups :
     name => merge(config, {
       subnet_ids = data.aws_subnets.eks_subnets.ids
+      update_config = {
+        max_unavailable = 1
+      }
     })
   }
 

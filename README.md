@@ -12,10 +12,8 @@
 
 ## To do:
 
-- Implement upgrade strategy for eks node group (max_unavailable 1)
+- Create another project to manage eks addons to setup the gitops process with argocd
 - Expands access entries to include eks AmazonEKSViewPolicy for devs
-- Create another project to manage eks addons
-- Setup the gitops process with argocd
 
 Could be an interesting thing to manage addons and argocd with the following module: https://github.com/aws-ia/terraform-aws-eks-blueprints-addons
 
