@@ -1,0 +1,61 @@
+global:
+  # to schedule argocd on platoform engineering team node groups
+  nodeSelector:
+    team: "platform-engineering"
+    workload: "critical"
+  
+  tolerations:
+    - key: "team"
+      operator: "Equal"
+      value: "platform-engineering"
+      effect: "NoSchedule"
+
+server:
+  autoscaling:
+    enabled: false
+  replicas: 2
+    # the following is to force the pods in different aws zones even if the anti affinity could be enough it 
+    # depends also on the autoscaling?
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: "topology.kubernetes.io/zone"
+      whenUnsatisfiable: "DoNotSchedule"
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: argocd-server
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: argocd-server
+          topologyKey: kubernetes.io/hostname
+
+repoServer:
+  autoscaling:
+    enabled: false
+  replicas: 2
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: "topology.kubernetes.io/zone"
+      whenUnsatisfiable: "DoNotSchedule"
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: argocd-server
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: argocd-repo-server
+          topologyKey: kubernetes.io/hostname
+
+# redis is the only statefull object but is used (i assume) only to cache user session for the argocd ui login
+# so is set up only to 1, beware that the number of redis replicas should be an odd number otherwise you could
+# have a split brain in high avalability in case of even number (as far as i know but could be my mistake)
+redis:
+  enabled: true
+
+# in case of multiple project this could be scaled
+controller:
+  replicas: 1
