@@ -14,9 +14,9 @@ resource "helm_release" "platform_engineering_bootstrap" {
           - resources-finalizer.argocd.argoproj.io
         project: default
         source:
-          repoURL: ${var.github_gitops_project}
+          repoURL: ${var.github_project}
           targetRevision: HEAD
-          path: bootstrap/${var.sdlc_env}
+          path: gitops/bootstrap/${var.sdlc_env}
         destination:
           server: https://kubernetes.default.svc
           namespace: argocd

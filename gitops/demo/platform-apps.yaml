@@ -11,7 +11,7 @@ spec:
               repoURL: https://github.com/l0s3rc0d3/platform-engineering-demo
               revision: HEAD
               directories:
-                - path: helm/*
+                - path: gitops/helm/*
           - list:
               elements:
                 - env: demo
