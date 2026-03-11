@@ -5,21 +5,22 @@
 - Terraform projects are small on purpose i want to avoid to have a big cauldron, it's better to divide in multiple projects to enhance the maintainability of the iac
 - Terraform projects are shaped so a dr solution would be easy
 - Terraform project are shaped in a way that you have to just fill in the var file to reduce the complexity
-- Vpc multi-az with non routable ip ranges for eks pods
 - Vpc private endpoints enabled
 - Eks control plane is publicly reachable (cause is a demo) and we use an ip whitelist to filter the reachability
-- Eks addons are empty on purpose (will be managed by a separate project)
+- Eks workloads should be completly stateless and for data persistence use aws s3 (loki/tempo/mimir are compatible, grafana should use an external db configured in aws rds )
 
 ## To do:
 
-- Create another project to manage eks addons to setup the gitops process with argocd
+- Add the platform application following gitops principles like (karpenter/keda/grafana/loki/tempo/mimir)
 - Expands access entries to include eks AmazonEKSViewPolicy for devs
+- use aws cognito and integrate argocd login with it
 
-Could be an interesting thing to manage addons and argocd with the following module: https://github.com/aws-ia/terraform-aws-eks-blueprints-addons
 
 ### How to execute
 
-Beware! Before run there are some placeholder here and there...
+Beware! Before run there are some placeholder here and there for example:
+- iam used in eks project for assignment of permissions under access_entries
+- ip whitelist to access the eks control plane, cause this is a demo i set up the control plane as public in a production environment the control plane would be private
 In each folder under the terraform one you can just run:
 
 ```
@@ -32,3 +33,14 @@ and then when is finished:
 ```
 terraform destroy -var-file="./backend/eu.tfvars"
 ```
+or after the introduction of Makefile
+```
+make apply-all
+```
+to execute the entire infrastructure
+
+use:
+```
+make help
+```
+to discover all configured commands
