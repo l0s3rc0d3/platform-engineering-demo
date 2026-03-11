@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: platform-apps
+  namespace: argocd
+spec:
+  generators:
+    - matrix:
+        generators:
+          - git:
+              repoURL: https://github.com/l0s3rc0d3/platform-engineering-demo
+              revision: HEAD
+              directories:
+                - path: helm/*
+          - list:
+              elements:
+                - env: demo
+  template:
+    metadata:
+      name: "{{path.basename}}"
+      namespace: argocd
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/l0s3rc0d3/platform-engineering-demo
+        targetRevision: HEAD
+        path: "{{path}}"
+        helm:
+          ignoreMissingValueFiles: true
+          valueFiles:
+            - values.yaml         
+            - ./overrides/override.{{env}}.yaml     
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{path.basename}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
+        retry:
+          limit: 3
+          backoff:
+            duration: 30s
+            factor: 2
+            maxDuration: 5m
