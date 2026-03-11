@@ -1,11 +1,14 @@
 terraform {
   required_version = "1.14.2"
 
-  # this is not an s3 bucket + dynamodb table on purpose
-  # and should be managed with a separate file stored under backend to use -backend-config flag with terraform init command
-  backend "local" {
-    path = "/home/xxxxx/documents/tf_state/alz/terraform.tfstate"
-  }
+  cloud { 
+    
+    organization = "l0s3rc0d3" 
+
+    workspaces { 
+      name = "demo-alz" 
+    } 
+  } 
 
   required_providers {
     aws = {
@@ -17,7 +20,6 @@ terraform {
 
 provider "aws" {
   region  = var.aws_region
-  profile = "demo"
 
   default_tags {
     tags = {
@@ -27,5 +29,10 @@ provider "aws" {
       Owner          = "Platform engineering team"
       Github_Project = var.github_project
     }
+  }
+  # this is necessary to manage a conflict between tags added via the resource and the tags 
+  # added by default
+  ignore_tags {
+    keys = ["SubnetTier"]
   }
 }

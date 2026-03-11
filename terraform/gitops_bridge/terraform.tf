@@ -1,9 +1,14 @@
 terraform {
   required_version = "1.14.2"
 
-  backend "local" {
-    path = "/home/xxxxx/documents/tf_state/eks_addons/terraform.tfstate"
-  }
+  cloud { 
+    
+    organization = "l0s3rc0d3" 
+
+    workspaces { 
+      name = "demo-gitops_bridge" 
+    } 
+  } 
 
   required_providers {
     aws = {
@@ -27,7 +32,6 @@ terraform {
 
 provider "aws" {
   region  = var.aws_region
-  profile = "demo"
 
   default_tags {
     tags = {
