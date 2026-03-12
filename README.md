@@ -13,8 +13,8 @@
 
 - Add the platform application following gitops principles like (karpenter/keda/grafana/loki/tempo/mimir)
 - Expands access entries to include eks AmazonEKSViewPolicy for devs
-- use aws cognito and integrate argocd login with it
-
+- Add business application gitops structure
+- Use aws cognito and integrate argocd login with it
 
 ### How to execute
 

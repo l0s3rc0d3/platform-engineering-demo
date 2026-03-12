@@ -7,26 +7,6 @@ resource "helm_release" "platform_engineering_bootstrap" {
 
   values = [
     <<-EOT
-    applications:
-      platform-engineering-bootstrap:
-        namespace: argocd
-        finalizers:
-          - resources-finalizer.argocd.argoproj.io
-        project: default
-        source:
-          repoURL: ${var.github_project}
-          targetRevision: ${var.gitops_branch}
-          path: gitops/${var.sdlc_env}
-        destination:
-          server: https://kubernetes.default.svc
-          namespace: argocd
-        syncPolicy:
-          automated:
-            prune: true
-            selfHeal: true
-          syncOptions:
-            - CreateNamespace=true
-
     applicationsets:
       platform-apps:
         namespace: argocd
