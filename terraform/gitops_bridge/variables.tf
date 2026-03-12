@@ -17,3 +17,9 @@ variable "eks_name" {
   type        = string
   description = "Aws eks cluster name to target for addons installation"
 }
+
+variable "gitops_branch" {
+  type        = string
+  description = "Git branch to use for gitops resources"
+  default     = "main"
+}
