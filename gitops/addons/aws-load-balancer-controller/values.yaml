@@ -1,0 +1,46 @@
+aws-load-balancer-controller:
+ 
+  serviceAccount:
+    create: true
+    name: "aws-load-balancer-controller"
+ 
+  replicaCount: 2
+ 
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: "topology.kubernetes.io/zone"
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: aws-load-balancer-controller
+    - maxSkew: 1
+      topologyKey: "kubernetes.io/hostname"
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: aws-load-balancer-controller
+ 
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: aws-load-balancer-controller
+          topologyKey: kubernetes.io/hostname
+ 
+  nodeSelector:
+    team: "platform-engineering"
+    workload: "critical"
+ 
+  tolerations:
+    - key: "team"
+      operator: "Equal"
+      value: "platform-engineering"
+      effect: "NoSchedule"
+ 
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      memory: 128Mi
