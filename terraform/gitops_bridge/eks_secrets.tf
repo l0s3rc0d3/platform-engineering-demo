@@ -21,6 +21,7 @@ resource "kubernetes_secret_v1" "argocd_cluster_metadata" {
         environment      = var.sdlc_env
         aws_cluster_name = var.eks_name
         aws_region       = var.aws_region
+        aws_vpc_id       = data.aws_vpc.selected.id
       }
     )
   }

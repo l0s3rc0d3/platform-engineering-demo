@@ -82,6 +82,8 @@ resource "helm_release" "platform_engineering_bootstrap" {
                     value: "{{metadata.annotations.aws_cluster_name}}"
                   - name: "aws-load-balancer-controller.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
                     value: "{{metadata.annotations.aws_load_balancer_controller_iam_role_arn}}"
+                  - name: "aws-load-balancer-controller.vpcId"  
+                    value: "{{metadata.annotations.aws_vpc_id}}"
             destination:
               server: "{{server}}"
               namespace: aws-load-balancer-controller
