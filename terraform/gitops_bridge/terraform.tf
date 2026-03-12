@@ -1,14 +1,14 @@
 terraform {
   required_version = "1.14.2"
 
-  cloud { 
-    
-    organization = "l0s3rc0d3" 
+  cloud {
 
-    workspaces { 
-      name = "demo-gitops_bridge" 
-    } 
-  } 
+    organization = "l0s3rc0d3"
+
+    workspaces {
+      name = "demo-gitops_bridge"
+    }
+  }
 
   required_providers {
     aws = {
@@ -31,7 +31,7 @@ terraform {
 }
 
 provider "aws" {
-  region  = var.aws_region
+  region = var.aws_region
 
   default_tags {
     tags = {
