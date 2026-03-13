@@ -11,6 +11,8 @@
 
 ## To do:
 
+- IMPORTANT: change anti affinity rule to preferredDuringSchedulingIgnoredDuringExecution instead of requiredDuringSchedulingIgnoredDuringExecution to let 
+  platform engineering team scale platform engineering applications in special cases (like argo if it has to sync a lot of apps at the same time)
 - Add the platform application following gitops principles like (karpenter/keda/grafana/loki/tempo/mimir)
 - Expands access entries to include eks AmazonEKSViewPolicy for devs
 - Add business application gitops structure
