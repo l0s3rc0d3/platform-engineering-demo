@@ -18,7 +18,7 @@ resource "helm_release" "platform_engineering_bootstrap" {
                   enable_external_secrets: "true"
         template:
           metadata:
-            name: "addon-{{name}}-external-secrets"
+            name: "{{metadata.annotations.aws_cluster_name}}-external-secrets"
             namespace: argocd
             finalizers:
               - resources-finalizer.argocd.argoproj.io
@@ -62,7 +62,7 @@ resource "helm_release" "platform_engineering_bootstrap" {
                   enable_aws_load_balancer_controller: "true"
         template:
           metadata:
-            name: "addon-{{name}}-aws-load-balancer-controller"
+            name: "{{metadata.annotations.aws_cluster_name}}-aws-load-balancer-controller"
             namespace: argocd
             finalizers:
               - resources-finalizer.argocd.argoproj.io
