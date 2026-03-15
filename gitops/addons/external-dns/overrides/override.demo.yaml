@@ -1,0 +1,19 @@
+external-dns:
+  provider:
+    name: aws
+ 
+  env:
+    - name: AWS_DEFAULT_REGION
+      value: eu-west-1
+  
+  # The following will be passed as a secret to argocd and will be as a var in terraform (placeholder)
+  # domainFilters:
+  #   - "yourDnsPublicZone.com"
+ 
+  # Restrict external-dns to the specific hosted zone to avoid touching other zones in the account
+  # i guess that this is something that could be used to restrict even more? i'm new to external dns so i'm experimenting
+  zoneIdFilters: []
+ 
+  # aws specific tuning
+  extraArgs:
+    - --aws-zone-type=public

@@ -1,0 +1,58 @@
+external-dns:
+
+  serviceAccount:
+    create: true
+    name: "external-dns"
+
+  replicaCount: 2
+
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: "topology.kubernetes.io/zone"
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: external-dns
+    - maxSkew: 1
+      topologyKey: "kubernetes.io/hostname"
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/name: external-dns
+
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: external-dns
+          topologyKey: kubernetes.io/hostname
+
+  nodeSelector:
+    team: "platform-engineering"
+    workload: "critical"
+
+  tolerations:
+    - key: "team"
+      operator: "Equal"
+      value: "platform-engineering"
+      effect: "NoSchedule"
+
+  resources:
+    requests:
+      cpu: 10m
+      memory: 32Mi
+    limits:
+      memory: 128Mi
+
+  # Policy upsert-only is safer: external-dns will create/update records but never delete them.
+  # Switch to "sync" only if you want full lifecycle management (deletions included).
+  policy: upsert-only
+
+  # Limit external-dns to records it owns to avoid conflicts with manually managed ones.
+  txtOwnerId: "external-dns"
+
+  # Source list: "service" manages LoadBalancer/NodePort Services, "ingress" manages Ingress resources.
+  sources:
+    - service
+    - ingress

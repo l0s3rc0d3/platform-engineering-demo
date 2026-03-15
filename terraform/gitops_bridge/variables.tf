@@ -23,3 +23,9 @@ variable "gitops_branch" {
   description = "Git branch to use for gitops resources"
   default     = "main"
 }
+
+variable "dns_public_zone" {
+  type        = string
+  description = "This will be the public zone managed by external dns application, and will be kept private for privacy and passed as a secret to argocd gitops part"
+  sensitive   = true
+}

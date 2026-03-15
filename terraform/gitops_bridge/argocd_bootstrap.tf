@@ -100,6 +100,51 @@ resource "helm_release" "platform_engineering_bootstrap" {
                   duration: 30s
                   factor: 2
                   maxDuration: 5m
+      external-dns:
+        namespace: argocd
+        generators:
+          - clusters:
+              selector:
+                matchLabels:
+                  enable_external_dns: "true"
+        template:
+          metadata:
+            name: "{{metadata.annotations.aws_cluster_name}}-external-dns"
+            namespace: argocd
+            finalizers:
+              - resources-finalizer.argocd.argoproj.io
+          spec:
+            project: default
+            source:
+              repoURL: ${var.github_project}
+              targetRevision: ${var.gitops_branch}
+              path: gitops/addons/external-dns
+              helm:
+                ignoreMissingValueFiles: true
+                valueFiles:
+                  - values.yaml
+                  - ./overrides/override.{{metadata.annotations.environment}}.yaml
+                parameters:
+                  - name: "external-dns.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+                    value: "{{metadata.annotations.external_dns_iam_role_arn}}"
+                  - name: "external-dns.domainFilters[0]"
+                    value: "{{metadata.annotations.dns_public_zone}}"
+            destination:
+              server: "{{server}}"
+              namespace: external-dns
+            syncPolicy:
+              automated:
+                prune: true
+                selfHeal: true
+              syncOptions:
+                - CreateNamespace=true
+                - ServerSideApply=true
+              retry:
+                limit: 3
+                backoff:
+                  duration: 30s
+                  factor: 2
+                  maxDuration: 5m
     EOT
   ]
 
