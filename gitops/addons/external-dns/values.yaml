@@ -4,7 +4,8 @@ external-dns:
     create: true
     name: "external-dns"
 
-  replicaCount: 2
+  # you can't set up the replicaset of extenal-dns cause is hardcoded inside the deployment template of the upstream chart
+  # replicaCount: 2e
 
   topologySpreadConstraints:
     - maxSkew: 1
