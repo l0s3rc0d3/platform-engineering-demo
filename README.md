@@ -11,11 +11,9 @@
 
 ## To do:
 
-- IMPORTANT: change anti affinity rule to preferredDuringSchedulingIgnoredDuringExecution instead of requiredDuringSchedulingIgnoredDuringExecution to let 
-  platform engineering team scale platform engineering applications in special cases (like argo if it has to sync a lot of apps at the same time)
+- add tls configuration using acm to enable ssl offload on public load balancer
 - Find a nice way to include test app to test the external-secret/external-dns/alb-controller functionality (i've done a little test and its working)
   - and a clean way to remove all the components (clustersecretstore aws-secretsmanager/dns records leftovers)
-- add tls configuration using acm to enable ssl offload on public load balancer
 - Add the platform application following gitops principles like (karpenter/keda/grafana/loki/tempo/mimir)
 - Expands access entries to include eks AmazonEKSViewPolicy for devs
 - Add business application gitops structure
