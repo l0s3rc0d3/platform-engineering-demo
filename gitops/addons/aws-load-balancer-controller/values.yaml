@@ -22,7 +22,7 @@ aws-load-balancer-controller:
  
   affinity:
     podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
+      preferredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
             matchLabels:
               app.kubernetes.io/name: aws-load-balancer-controller

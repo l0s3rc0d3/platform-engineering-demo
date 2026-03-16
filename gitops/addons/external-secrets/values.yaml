@@ -22,7 +22,7 @@ external-secrets:
           app.kubernetes.io/name: external-secrets
   affinity:
     podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
+      preferredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
             matchLabels:
               app.kubernetes.io/name: external-secrets

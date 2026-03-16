@@ -25,7 +25,7 @@ server:
           app.kubernetes.io/name: argocd-server
   affinity:
     podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
+      preferredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
             matchLabels:
               app.kubernetes.io/name: argocd-server
@@ -44,7 +44,7 @@ repoServer:
           app.kubernetes.io/name: argocd-server
   affinity:
     podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
+      preferredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
             matchLabels:
               app.kubernetes.io/name: argocd-repo-server

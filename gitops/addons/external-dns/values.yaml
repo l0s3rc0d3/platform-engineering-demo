@@ -23,7 +23,7 @@ external-dns:
 
   affinity:
     podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
+      preferredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
             matchLabels:
               app.kubernetes.io/name: external-dns
@@ -48,7 +48,7 @@ external-dns:
 
   # Policy upsert-only is safer: external-dns will create/update records but never delete them.
   # Switch to "sync" only if you want full lifecycle management (deletions included).
-  policy: upsert-only
+  policy: sync
 
   # Limit external-dns to records it owns to avoid conflicts with manually managed ones.
   txtOwnerId: "external-dns"
