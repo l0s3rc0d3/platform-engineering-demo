@@ -1,4 +1,4 @@
-# AWS Platform Engineering Showcase: Vpc + Eks modular infrastructure
+# AWS Platform Engineering Showcase: 
 
 ## Key Features:
 
@@ -8,6 +8,7 @@
 - Vpc private endpoints enabled
 - Eks control plane is publicly reachable (cause is a demo) and we use an ip whitelist to filter the reachability
 - Eks workloads should be completly stateless and for data persistence use aws s3 (loki/tempo/mimir are compatible, grafana should use an external db configured in aws rds )
+- Gitops structure to automatically configure eks cluster
 
 ## To do:
 
