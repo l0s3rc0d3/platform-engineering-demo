@@ -26,7 +26,9 @@ server:
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
             matchLabels:
               app.kubernetes.io/name: argocd-server
           topologyKey: kubernetes.io/hostname

@@ -14,20 +14,16 @@ external-dns:
       labelSelector:
         matchLabels:
           app.kubernetes.io/name: external-dns
-    - maxSkew: 1
-      topologyKey: "kubernetes.io/hostname"
-      whenUnsatisfiable: DoNotSchedule
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/name: external-dns
 
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: external-dns
-          topologyKey: kubernetes.io/hostname
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: external-dns
+            topologyKey: kubernetes.io/hostname
 
   nodeSelector:
     team: "platform-engineering"

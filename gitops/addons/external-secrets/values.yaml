@@ -14,19 +14,16 @@ external-secrets:
       labelSelector:
         matchLabels:
           app.kubernetes.io/name: external-secrets
-    - maxSkew: 1
-      topologyKey: "kubernetes.io/hostname"
-      whenUnsatisfiable: DoNotSchedule
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/name: external-secrets
+
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: external-secrets
-          topologyKey: kubernetes.io/hostname
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: external-secrets
+            topologyKey: kubernetes.io/hostname
 
   webhook:
     certManager:

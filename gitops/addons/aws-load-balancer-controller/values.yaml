@@ -13,20 +13,16 @@ aws-load-balancer-controller:
       labelSelector:
         matchLabels:
           app.kubernetes.io/name: aws-load-balancer-controller
-    - maxSkew: 1
-      topologyKey: "kubernetes.io/hostname"
-      whenUnsatisfiable: DoNotSchedule
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/name: aws-load-balancer-controller
  
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: aws-load-balancer-controller
-          topologyKey: kubernetes.io/hostname
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: aws-load-balancer-controller
+            topologyKey: kubernetes.io/hostname
  
   nodeSelector:
     team: "platform-engineering"
