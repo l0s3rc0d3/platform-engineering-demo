@@ -43,14 +43,17 @@ repoServer:
       whenUnsatisfiable: "DoNotSchedule"
       labelSelector:
         matchLabels:
-          app.kubernetes.io/name: argocd-server
+          app.kubernetes.io/name: argocd-repo-server  
+          
   affinity:
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: argocd-repo-server
-          topologyKey: kubernetes.io/hostname
+        - weight: 100                    
+          podAffinityTerm:               
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: argocd-repo-server
+            topologyKey: kubernetes.io/hostname
 
 # redis is the only statefull object but is used (i assume) only to cache user session for the argocd ui login
 # so is set up only to 1, beware that the number of redis replicas should be an odd number otherwise you could
