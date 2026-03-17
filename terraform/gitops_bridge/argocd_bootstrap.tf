@@ -145,7 +145,55 @@ resource "helm_release" "platform_engineering_bootstrap" {
                   duration: 30s
                   factor: 2
                   maxDuration: 5m
-    EOT
+      
+      platform-ingress:
+        namespace: argocd                          
+        generators:
+          - clusters:
+              selector:
+                matchLabels:
+                  enable_aws_load_balancer_controller: "true"
+                  enable_platform_public_ingress: "true"
+        template:
+          metadata:
+            name: "{{metadata.annotations.aws_cluster_name}}-platform-ingress"
+            namespace: argocd                      
+            finalizers:                            
+              - resources-finalizer.argocd.argoproj.io
+          spec:
+            project: default                       
+            source:
+              repoURL: ${var.github_project}
+              targetRevision: ${var.gitops_branch}
+              path: gitops/platform/shared-ingress
+              helm:
+                ignoreMissingValueFiles: true
+                valueFiles:                        
+                  - values.yaml
+                  - ./overrides/override.{{metadata.annotations.environment}}.yaml
+                parameters:
+                  - name: "clusterName"
+                    value: "{{metadata.annotations.aws_cluster_name}}"
+                  - name: "acmCertificateArn"
+                    value: "{{metadata.annotations.acm_certificate_arn}}"
+                  - name: "alb.securityGroup"
+                    value: "{{metadata.annotations.alb_security_group_id}}"
+            destination:
+              server: "{{server}}"
+              namespace: platform-engineering
+            syncPolicy:
+              automated:
+                prune: true
+                selfHeal: true
+              syncOptions:
+                - CreateNamespace=true
+              retry:
+                limit: 3
+                backoff:
+                  duration: 30s
+                  factor: 2
+                  maxDuration: 5m
+          EOT
   ]
 
   depends_on = [helm_release.argocd]

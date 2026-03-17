@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: platform-shared-alb
+  namespace: platform-engineering  
+  annotations:
+    alb.ingress.kubernetes.io/group.name: {{ .Values.alb.groupName | quote }}
+    alb.ingress.kubernetes.io/group.order: {{ .Values.alb.groupOrder | quote }}
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/load-balancer-name: "{{ .Values.clusterName }}-public-shared"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/certificate-arn: "{{ .Values.acmCertificateArn }}"
+    alb.ingress.kubernetes.io/ssl-policy: {{ .Values.alb.sslPolicy | quote }}
+    # In a production environment i image that we could have a waf in front of it
+    # or maybe in more enterprise environment we could have a big cdn in front of us like
+    # akamai or cloudflare that provides waf features like bot protection
+    # identify attack using signatures ecc ecc..
+    # in a scenario where we have akamai or cloudflare a prefix list attached to the alb would be necessary 
+    # alb.ingress.kubernetes.io/wafv2-acl-arn: "arn:aws:wafv2:..."
+    alb.ingress.kubernetes.io/load-balancer-attributes: >-
+      routing.http2.enabled={{ .Values.alb.http2Enabled }},
+      idle_timeout.timeout_seconds={{ .Values.alb.idleTimeoutSeconds }},
+      deletion_protection.enabled={{ .Values.alb.deletionProtection }},
+      load_balancing.cross_zone.enabled={{ .Values.alb.crossZoneEnabled }}
+      {{- if and .Values.accessLogsEnabled .Values.logsBucket }},
+      access_logs.s3.enabled=true,
+      access_logs.s3.bucket={{ .Values.logsBucket }},
+      access_logs.s3.prefix=alb-public-shared
+      {{- end }}
+    # deletion protection is disable cause this is a demo environment
+    # and i destroy everything after working on it
+    alb.ingress.kubernetes.io/actions.shared-default-backend: >
+      {"type":"fixed-response","fixedResponseConfig":{"contentType":"text/plain","statusCode":"404","messageBody":"Not Found"}}
+    alb.ingress.kubernetes.io/security-groups: {{ .Values.alb.securityGroup | quote }}
+
+spec:
+  ingressClassName: platform-engineering-public-ingress
+  defaultBackend:
+    service:
+      name: shared-default-backend 
+      port:
+        name: use-annotation       

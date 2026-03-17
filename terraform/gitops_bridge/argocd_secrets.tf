@@ -12,6 +12,7 @@ resource "kubernetes_secret_v1" "argocd_cluster_metadata" {
       "enable_external_secrets"             = "true"    # this enable the gitops modularity feature and you can choose which addon to enable 
       "enable_aws_load_balancer_controller" = "true"
       "enable_external_dns"                 = "true"
+      "enable_platform_public_ingress"      = "true"
     }
 
     # Annotations are read by argocd and contains infra values produced by terraform
@@ -19,11 +20,13 @@ resource "kubernetes_secret_v1" "argocd_cluster_metadata" {
     annotations = merge(
       module.eks_blueprints_addons.gitops_metadata,
       {
-        environment      = var.sdlc_env
-        aws_cluster_name = var.eks_name
-        aws_region       = var.aws_region
-        aws_vpc_id       = data.aws_vpc.selected.id
-        dns_public_zone  = var.dns_public_zone
+        environment           = var.sdlc_env
+        aws_cluster_name      = var.eks_name
+        aws_region            = var.aws_region
+        aws_vpc_id            = data.aws_vpc.selected.id
+        dns_public_zone       = var.dns_public_zone
+        acm_certificate_arn   = aws_acm_certificate.wildcard.arn
+        alb_security_group_id = data.aws_security_group.alb_shared.id
       }
     )
   }

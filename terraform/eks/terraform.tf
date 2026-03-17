@@ -30,4 +30,7 @@ provider "aws" {
       Github_Project = var.github_project
     }
   }
+  ignore_tags {
+    keys = ["IngressTier"]
+  }
 }

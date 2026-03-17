@@ -18,3 +18,15 @@ data "aws_route53_zone" "public" {
   name         = var.dns_public_zone
   private_zone = false
 }
+
+data "aws_security_group" "alb_shared" {
+  filter {
+    name   = "tag:IngressTier"
+    values = ["PublicALB"]
+  }
+  
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.selected.id]
+  }
+}

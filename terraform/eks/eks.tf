@@ -13,6 +13,17 @@ module "eks" {
   endpoint_private_access      = true
   endpoint_public_access_cidrs = var.eks_controlplane_whitelist
 
+  node_security_group_additional_rules = {
+    ingress_alb_traffic = {
+      description              = "Allow traffic from shared ALB to nodes"
+      protocol                 = "tcp"
+      from_port                = 0
+      to_port                  = 65535
+      type                     = "ingress"
+      source_security_group_id = aws_security_group.alb_shared.id
+    }
+  }
+
   timeouts = {
     create = "20m"
     update = "20m"

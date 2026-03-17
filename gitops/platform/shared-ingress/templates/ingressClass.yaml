@@ -1,0 +1,9 @@
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: platform-engineering-public-ingress
+  annotations:
+    # i think that since this is the public ingress shouldnt be the default one
+    ingressclass.kubernetes.io/is-default-class: "false"
+spec:
+  controller: ingress.k8s.aws/alb

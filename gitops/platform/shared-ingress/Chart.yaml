@@ -1,0 +1,6 @@
+apiVersion: v2
+name: platform-engineering-public-ingress
+description: Platform Engineering shared public ALB ingress and IngressClass
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

@@ -30,3 +30,5 @@ eks_managed_node_groups = {
     }
   }
 }
+
+alb_whitelist = ["XXX.XXX.XXX.XXX/32"]

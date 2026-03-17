@@ -53,3 +53,9 @@ variable "eks_managed_node_groups" {
   }))
   description = "Aws eks managed node groups for platform engineering team"
 }
+
+variable "alb_whitelist" {
+  type        = list(string)
+  description = "List of public CIDRs allowed to access the shared public ALB"
+  default     = ["0.0.0.0/0"]
+}

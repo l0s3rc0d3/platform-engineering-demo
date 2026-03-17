@@ -1,0 +1,16 @@
+# both clusterName and acmCertificateArn are passed trought argocd secret name
+clusterName: ""
+acmCertificateArn: ""
+logsBucket: ""
+accessLogsEnabled: false
+
+alb:
+  idleTimeoutSeconds: 60
+  deletionProtection: true
+  http2Enabled: true
+  crossZoneEnabled: true
+  sslPolicy: "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  groupName: "public-shared"
+  groupOrder: "0"
+  # this is created by terraform and passed to argo trough a secret
+  securityGroup: ""
